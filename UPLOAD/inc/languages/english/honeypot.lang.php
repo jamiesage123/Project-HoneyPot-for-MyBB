@@ -20,5 +20,6 @@ $l = [
     'honeypot_created_at' => "Date",
     'honeypot_actions' => "Actions",
     'honeypot_view' => "View on Project HoneyPot",
-    'honeypot_no_logs' => "There are no Project HoneyPot logs to show"
+    'honeypot_no_logs' => "There are no Project HoneyPot logs to show",
+    'honeypot_invalid_access_key' => "Your access key is invalid!"
 ];

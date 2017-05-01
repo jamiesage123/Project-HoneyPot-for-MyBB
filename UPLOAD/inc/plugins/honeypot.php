@@ -17,6 +17,7 @@ $plugins->add_hook('member_do_register_start', 'honeypot_register_start');
 $plugins->add_hook('admin_tools_menu_logs', 'honeypot_admin_tools_menu_logs');
 $plugins->add_hook('admin_tools_action_handler', 'honeypot_admin_tools_action_handler');
 $plugins->add_hook('admin_tools_permissions', 'honeypot_admin_tools_permissions');
+$plugins->add_hook('admin_config_settings_change_commit', 'honeypot_admin_config_settings_change_commit');
 
 /**
  * Returns an array of information about this plugin
@@ -186,6 +187,30 @@ function honeypot_admin_tools_action_handler(&$actions)
 }
 
 /**
+ * Hook into the settings change commit
+ * @return bool|void
+ */
+function honeypot_admin_config_settings_change_commit()
+{
+    global $mybb, $db;
+    $query = $db->simple_select('settinggroups', '*', 'gid = ' . $db->escape_string($mybb->get_input('gid')), ["limit" => 1]);
+    $settings = $db->fetch_array($query);
+
+    // Make sure the user is editing our plugin
+    if ($settings["name"] === 'honeypot') {
+        // Test the users access key to verify if it is valid
+        try {
+            new ProjectHoneyPot\HoneyPot($_SERVER['REMOTE_ADDR'], $mybb->settings['honeypot_accesskey']);
+        } catch (\Exception $e) {
+            flash_message($e->getMessage(), 'error');
+            admin_redirect("index.php?module=config-settings&action=change&gid=" . $mybb->get_input('gid'));
+            return die();
+        }
+    }
+    return true;
+}
+
+/**
  * Check if all the necessary settings are available for Project HoneyPot to be acitve
  */
 function isHoneyPotActive()
@@ -196,7 +221,7 @@ function isHoneyPotActive()
     if (!ProjectHoneyPot\HoneyPot::isValidAccessKey($mybb->settings['honeypot_accesskey'])) {
         return false;
     }
-	
+
     // Validate the threat level
     if ($mybb->settings['honeypot_threatlevel'] < 0) {
         return false;
