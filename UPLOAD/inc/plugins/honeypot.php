@@ -138,21 +138,25 @@ function honeypot_register_start()
 
     if (isHoneyPotActive()) {
         $ip_address = $_SERVER['REMOTE_ADDR'];
-        $honeypot = new ProjectHoneyPot\HoneyPot($ip_address, $mybb->settings['honeypot_accesskey']);
+        try {
+            $honeypot = new ProjectHoneyPot\HoneyPot($ip_address, $mybb->settings['honeypot_accesskey']);
 
-        if (isThreat($honeypot->getThreatScore())) {
-            // Log this event
-            $data = [
-                'username' => $db->escape_string($mybb->get_input('username')),
-                'email' => $db->escape_string($mybb->get_input('email')),
-                'ip_address' => $db->escape_string($ip_address),
-                'created_at' => (int)TIME_NOW
-            ];
-            $db->insert_query('project_honeypot', array_merge($data, $honeypot->all()));
+            if (isThreat($honeypot->getThreatScore())) {
+                // Log this event
+                $data = [
+                    'username' => $db->escape_string($mybb->get_input('username')),
+                    'email' => $db->escape_string($mybb->get_input('email')),
+                    'ip_address' => $db->escape_string($ip_address),
+                    'created_at' => (int)TIME_NOW
+                ];
+                $db->insert_query('project_honeypot', array_merge($data, $honeypot->all()));
 
-            header('HTTP/1.0 403 Forbidden');
-            die("You have been flagged as '" . $honeypot->getVisitorType() . "'. Therefore, you cannot register."); // TODO: Customisable text
-            return false;
+                header('HTTP/1.0 403 Forbidden');
+                die("You have been flagged as '" . $honeypot->getVisitorType() . "'. Therefore, you cannot register."); // TODO: Customisable text
+                return false;
+            }
+        } catch (\Exception $e) {
+            // TODO: We should log this event and alert the administrators of the error
         }
     }
     return true;
