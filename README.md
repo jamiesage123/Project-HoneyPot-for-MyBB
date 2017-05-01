@@ -16,7 +16,7 @@ Firstly, you we need to get an access key from Project HoneyPot.
 Now that you have an access you, you can install this plugin.
 1. Merging all the folders and files in the "UPLOAD" directory to your root directory of your MyBB installation. This process *should not* override any existing files.
 2. After installing this plugin, head over to your MyBB "Admin Control Panel" and navigate to "Configuration" -> "Plugins". On this page, you should see the "Project HoneyPot for MyBB" under the "Inactive Plugins" list. Click "Install & Activate".
-3. Now, head back to "Configuration" page and scroll to the bottom of the page to find the "Project HoneyPot" settings under "Plugin Settings". On this page you will need to enter your access key which you generated in step 2. You can also configure the threat level threshold on this page too.
+3. Now, head back to the "Configuration" page and scroll to the bottom of the page to find the "Project HoneyPot" settings under "Plugin Settings". On this page you will need to enter your access key; you can also configure your threat level threshold on this page too.
 
 You now have Project HoneyPot installed on your MyBB installation.
 
@@ -25,7 +25,7 @@ You now have Project HoneyPot installed on your MyBB installation.
 
 If you have entered a valid access key and threat level, this plugin will automatically prevent any users who hit your threat level threshold from registering on your forums.
 
-You can see all of this plugins activities in the Project HoneyPot logs, which are located under "Tools & Maintenance", in the "Logs" sub-menu.
+You can see all of this plugins activities on the Project HoneyPot logs, which are located under "Tools & Maintenance", in the "Logs" sub-menu.
 
 ## Credits
 
