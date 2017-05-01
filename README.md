@@ -9,7 +9,7 @@ Currently, this plugin requires you to have a Project HoneyPot access key (which
 
 ## Installation
 
-Firstly, you we need to get an access key from Project HoneyPot.
+Firstly, you will need to get an access key from Project HoneyPot.
 1. Head over to [Project HoneyPot](https://www.projecthoneypot.org/) and [create an account](https://www.projecthoneypot.org/create_account.php).
 2. Next, you will need to go to the "[Manage HTTP Blacklist](https://www.projecthoneypot.org/httpbl_configure.php)" page and generate a http:BL access key.
 
