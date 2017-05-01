@@ -21,5 +21,7 @@ $l = [
     'honeypot_actions' => "Actions",
     'honeypot_view' => "View on Project HoneyPot",
     'honeypot_no_logs' => "There are no Project HoneyPot logs to show",
-    'honeypot_invalid_access_key' => "Your access key is invalid!"
+    'honeypot_invalid_access_key' => "Your access key is invalid!",
+    'honeypot_errormsg' => 'Error Message',
+    'honeypot_errormsg_desc' => 'The message a user will receive when they are flagged by Project HoneyPot'
 ];

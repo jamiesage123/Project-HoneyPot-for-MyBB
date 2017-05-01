@@ -69,14 +69,24 @@ function honeypot_install()
     );
     $db->insert_query("settings", $setting);
 
-
     $setting = array(
         "name" => "honeypot_threatlevel",
         "title" => $lang->honeypot_threatlevel,
         "description" => $lang->honeypot_threatlevel_desc,
         "optionscode" => "numeric",
         "value" => "25",
-        "disporder" => 1,
+        "disporder" => 2,
+        "gid" => $gid
+    );
+    $db->insert_query("settings", $setting);
+
+    $setting = array(
+        "name" => "honeypot_errormsg",
+        "title" => $lang->honeypot_errormsg,
+        "description" => $lang->honeypot_errormsg_desc,
+        "optionscode" => "text",
+        "value" => 'You have been flagged as \\\'{visitor_type}\\\'. Therefore, you cannot register.',
+        "disporder" => 3,
         "gid" => $gid
     );
     $db->insert_query("settings", $setting);
@@ -118,7 +128,7 @@ function honeypot_uninstall()
     global $db;
 
     // Delete the settings
-    $db->delete_query('settings', "name IN ('honeypot_accesskey', 'honeypot_threatlevel')");
+    $db->delete_query('settings', "name IN ('honeypot_accesskey', 'honeypot_threatlevel', 'honeypot_errormsg')");
     $db->delete_query('settinggroups', "name = 'honeypot'");
 
     // Drop the log table
@@ -151,8 +161,15 @@ function honeypot_register_start()
                 ];
                 $db->insert_query('project_honeypot', array_merge($data, $honeypot->all()));
 
+                // Build the error message
+                $message = str_replace(
+                    "{visitor_type}",
+                    $honeypot->getVisitorType(),
+                    $mybb->settings['honeypot_errormsg']
+                );
+
                 header('HTTP/1.0 403 Forbidden');
-                die("You have been flagged as '" . $honeypot->getVisitorType() . "'. Therefore, you cannot register."); // TODO: Customisable text
+                die($message);
                 return false;
             }
         } catch (\Exception $e) {
