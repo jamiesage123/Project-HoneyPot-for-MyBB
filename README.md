@@ -7,6 +7,10 @@ This MyBB plugin integrates Project HoneyPot into MyBB.
 
 Currently, this plugin requires you to have a Project HoneyPot access key (which is free!).
 
+View on Extend MyBB:
+
+[https://community.mybb.com/mods.php?action=view&pid=982](https://community.mybb.com/mods.php?action=view&pid=982)
+
 ## Installation
 
 Firstly, you will need to get an access key from Project HoneyPot.
