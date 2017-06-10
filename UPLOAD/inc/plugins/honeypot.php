@@ -92,7 +92,7 @@ function honeypot_install()
     $db->insert_query("settings", $setting);
 
     // Create out logs table
-    if (!$db->table_exists('fc_fields')) {
+    if (!$db->table_exists('project_honeypot')) {
         $db->write_query("
             CREATE TABLE `" . TABLE_PREFIX . "project_honeypot` (
             `id` INT NOT NULL AUTO_INCREMENT,
