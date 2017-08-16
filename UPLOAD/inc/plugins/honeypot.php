@@ -16,7 +16,6 @@ require('honeypot/honeypot.class.php');
 $plugins->add_hook('member_do_register_start', 'honeypot_register_start');
 $plugins->add_hook('admin_tools_menu_logs', 'honeypot_admin_tools_menu_logs');
 $plugins->add_hook('admin_tools_action_handler', 'honeypot_admin_tools_action_handler');
-$plugins->add_hook('admin_tools_permissions', 'honeypot_admin_tools_permissions');
 $plugins->add_hook('admin_config_settings_change_commit', 'honeypot_admin_config_settings_change_commit');
 
 /**
