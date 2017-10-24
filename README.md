@@ -1,4 +1,4 @@
-# Project HoneyPot for MyBB
+# Project HoneyPot for MyBB (https://mybb.com/)
 
 This MyBB plugin integrates Project HoneyPot into MyBB.
 
