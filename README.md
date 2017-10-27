@@ -34,7 +34,7 @@ You can see all of this plugins activities on the Project HoneyPot logs, which a
 ## Credits
 
 - Project HoneyPot - [https://www.projecthoneypot.org](https://www.projecthoneypot.org)
-- MyBB - [https://mybb.com](https://mybb.com)
+- MyBB - [https://www.mybb.com](https://mybb.com)
 - Jamie Sage - [https://www.jamiesage.co.uk](https://www.jamiesage.co.uk)
 
 ## License
