@@ -6,11 +6,17 @@ if (!defined("IN_MYBB")) {
 
 $page->add_breadcrumb_item($lang->honeypot, "index.php?module=tools-honeypot");
 
-$sub_tabs['honeypot'] = array(
+$sub_tabs['honeypot'] = [
     'title' => $lang->honeypot,
     'link' => "index.php?module=tools-honeypot",
     'description' => $lang->honeypot_logs_desc
-);
+];
+
+$sub_tabs['prune_honeypot'] = [
+    'title' => $lang->honeypot_prune,
+    'link' => "index.php?module=tools-honeypot&amp;action=prune",
+    'description' => $lang->honeypot_prune_desc
+];
 
 if (!$mybb->input['action']) {
     $page->output_header($lang->spam_logs);
@@ -104,6 +110,61 @@ if (!$mybb->input['action']) {
     if ($rescount > $perpage) {
         echo draw_admin_pagination($pagecnt, $perpage, $rescount, "index.php?module=tools-honeypot&amp;perpage=" . $perpage);
     }
+
+    $page->output_footer();
+} else if($mybb->input['action'] == 'prune') {
+    if(!is_super_admin($mybb->user['uid'])) {
+        flash_message($lang->cannot_perform_action_super_admin_general, 'error');
+        admin_redirect("index.php?module=tools-honeypot");
+    }
+
+    if($mybb->request_method == 'post')
+    {
+        $olderThan = $mybb->get_input('older_than', MyBB::INPUT_INT);
+        $minScore = $mybb->get_input('min_score', MyBB::INPUT_INT);
+
+        if ($olderThan <= 0) {
+            $olderThan = 1;
+        }
+
+        if ($minScore < 0) {
+            $minScore = null;
+        }
+
+        // Date range
+        $where = 'created_at < '.(TIME_NOW-($olderThan*86400));
+
+        // Minimum threat score
+        if (!empty($minScore)) {
+            $where .= " AND threat_score >= '" . intval($db->escape_string($minScore))  ."'";
+        }
+
+        // Perform the query
+        $query = $db->delete_query("project_honeypot", $where);
+
+        // Log the action
+        $num_deleted = $db->affected_rows();
+        log_admin_action($num_deleted);
+
+        flash_message($lang->pruned_honeypot, 'success');
+        admin_redirect('index.php?module=tools-honeypot');
+    }
+
+    $page->add_breadcrumb_item($lang->honeypot_prune, 'index.php?module=tools-honeypot&amp;action=prune');
+    $page->output_header($lang->spam_logs);
+    $page->output_nav_tabs($sub_tabs, 'prune_honeypot');
+
+
+    $form = new Form("index.php?module=tools-honeypot&amp;action=prune", "post");
+    $form_container = new FormContainer($lang->honeypot_prune);
+
+    $form_container->output_row($lang->honeypot_prune_score, "", $form->generate_numeric_field('min_score', $mybb->input['min_score'], array('id' => 'min_score', 'style' => 'width: 50px', 'min' => 0)), 'min_score');
+    $form_container->output_row($lang->honeypot_prune_date, "", $form->generate_numeric_field('older_than', $mybb->input['older_than'], array('id' => 'older_than', 'style' => 'width: 50px', 'min' => 0))." {$lang->days}", 'older_than');
+    $form_container->end();
+
+    $buttons[] = $form->generate_submit_button($lang->prune_honeypot_prune);
+    $form->output_submit_wrapper($buttons);
+    $form->end();
 
     $page->output_footer();
 }
