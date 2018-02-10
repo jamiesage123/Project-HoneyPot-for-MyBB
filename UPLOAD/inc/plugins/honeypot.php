@@ -32,7 +32,7 @@ function honeypot_info()
         "website" => "http://www.jamiesage.co.uk",
         "author" => "Jamie Sage",
         "authorsite" => "http://www.jamiesage.co.uk",
-        "version" => "0.2",
+        "version" => "1.0",
         "guid" => "",
         "codename" => str_replace('.php', '', basename(__FILE__)),
         "compatibility" => "18*"
